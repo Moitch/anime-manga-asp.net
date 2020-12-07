@@ -14,31 +14,21 @@ namespace AnimeMangaTest
     [TestClass]
     public class AnimesControllerTest
     {
-        // create db reference that will point to our in-memory db
         private ApplicationDbContext _context;
 
-        // create empty product list to hold mock product data
         List<Anime> animes = new List<Anime>();
-
-        // declare controller we are going to test
         AnimesController controller;
 
         [TestInitialize]
-        // this method runs automatically before each unit test to streamline the arranging
-        public void TestInitialize()
+        public void AnimeControllerTestsInit()
         {
-            // instantiate in-memory db
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             _context = new ApplicationDbContext(options);
 
-            // create mock data inside the in-memory db
-            var genre = new Genre { ID = 505, Name = "Some Genre" };
-
-            animes.Add(new Anime { ID = 87, Name = "Anime 1", Episodes = 8, AirStart = DateTime.Now, Genres = genre });
-            animes.Add(new Anime { ID = 92, Name = "Anime 2", Episodes = 9, AirStart = DateTime.Now, Genres = genre });
-            animes.Add(new Anime { ID = 95, Name = "Anime 3", Episodes = 10, AirStart = DateTime.Now, Genres = genre });
+            var genre = new Genre { ID = 25, Name = "Sports" };
+            animes.Add(new Anime { ID = 12, Name = "Haikyuu!!", Episodes = 8, AirStart = DateTime.Now, Genres = genre });
+            animes.Add(new Anime { ID = 103, Name = "Naruto", Episodes = 9, AirStart = DateTime.Now, Genres = genre });
+            animes.Add(new Anime { ID = 64, Name = "Bleach", Episodes = 10, AirStart = DateTime.Now, Genres = genre });
 
             foreach (var a in animes)
             {
@@ -46,8 +36,6 @@ namespace AnimeMangaTest
             }
 
             _context.SaveChanges();
-
-            // instantiate the products controller and pass it the mock db object (dependency injection)
             controller = new AnimesController(_context);
         }
 
@@ -56,25 +44,22 @@ namespace AnimeMangaTest
         [TestMethod]
         public void IndexViewLoads()
         {
-            // no arrange needed as all setup done first in TestInitialize()
-            // act, casting the Result property to a ViewResult
+            
             var result = controller.Index();
             var viewResult = (ViewResult)result.Result;
 
-            // assert
             Assert.AreEqual("Index", viewResult.ViewName);
         }
 
         [TestMethod]
         public void IndexReturnsAnimeData()
         {
-            // act
             var result = controller.Index();
             var viewResult = (ViewResult)result.Result;
-            // cast the result's data Model to a list of products so we can check it
+
             List<Anime> model = (List<Anime>)viewResult.Model;
 
-            // assert
+            
             CollectionAssert.AreEqual(animes.OrderBy(a => a.Name).ToList(), model);
         }
 
@@ -84,7 +69,7 @@ namespace AnimeMangaTest
         public void EditReturnsId()
         {
 
-            var result = controller.Edit(34, animes[0]);
+            var result = controller.Edit(12, animes[0]);
             var viewResult = (ViewResult)result.Result;
 
             Assert.AreEqual("Error", viewResult.ViewName);
@@ -94,27 +79,26 @@ namespace AnimeMangaTest
         public void EditSaved()
         {
             var anime = animes[0];
-            anime.Episodes = 10;
+            anime.Episodes = 54;
             var result = controller.Edit(anime.ID, anime);
             var redirectResult = (RedirectToActionResult)result.Result;
-            // assert
+
             Assert.AreEqual("Index", redirectResult.ActionName);
         }
 
         [TestMethod]
         public void EditIdInDatabase()
         {
-            var checkAnime = new Anime { ID = 1, Name = "Anime 1", Episodes = 8, AirStart = DateTime.Now, Genres = new Genre { ID = 595, Name = "Some Genre" } };
+            var checkAnime = new Anime { ID = 1, Name = "fake", Episodes = 12, AirStart = DateTime.Now, Genres = new Genre { ID = 595, Name = "random" } };
 
             var result = controller.Edit(1, checkAnime);
             var viewResult = (ViewResult)result.Result;
-            // assert
             Assert.AreEqual("Error", viewResult.ViewName);
         }
 
         //GET::EDIT
         [TestMethod]
-        public void AnimesGetEditNullId() //Invalid id, valid id loads edit view
+        public void AnimesGetEditNullId() 
         {
             var result = controller.Edit(null);
 
@@ -138,7 +122,7 @@ namespace AnimeMangaTest
         [TestMethod]
         public void AnimesGetEditValidId()
         {
-            var result = controller.Edit(87);
+            var result = controller.Edit(12);
 
             var viewResult = (ViewResult)result.Result;
 
@@ -149,7 +133,7 @@ namespace AnimeMangaTest
         [TestMethod]
         public void EditLoadsCorrectModel()
         {
-            var result = controller.Edit(87);
+            var result = controller.Edit(12);
             var viewResult = (ViewResult)result.Result;
             Anime model = (Anime)viewResult.Model;
             //List<Category> categoryModel= (List<Category>)viewResult.Model;
@@ -163,7 +147,7 @@ namespace AnimeMangaTest
         [TestMethod]
         public void EditLoadsViewData()
         {
-            var result = controller.Edit(87);
+            var result = controller.Edit(12);
             var viewResult = (ViewResult)result.Result;
             var viewData = viewResult.ViewData;
 
@@ -210,9 +194,9 @@ namespace AnimeMangaTest
         [TestMethod]
         public void PostCreateReturnsToList()
         {
-            var tempAnime = new Anime { ID = 1, Name = "Anime 1", Episodes = 8, AirStart = DateTime.Now, Genres = new Genre { ID = 595, Name = "Some Genre" } };
+            var checkAnime = new Anime { ID = 1, Name = "fake", Episodes = 12, AirStart = DateTime.Now, Genres = new Genre { ID = 595, Name = "random" } };
 
-            var result = controller.Create(tempAnime);
+            var result = controller.Create(checkAnime);
             var redirectResult = (RedirectToActionResult)result.Result;
 
             Assert.AreEqual("Index", redirectResult.ActionName);
@@ -221,12 +205,12 @@ namespace AnimeMangaTest
         [TestMethod]
         public void PostCreateSavedToDatabase()
         {
-            var tempAnime = new Anime { ID = 1, Name = "Anime 1", Episodes = 8, AirStart = DateTime.Now, Genres = new Genre { ID = 595, Name = "Some Genre" } };
+            var checkAnime = new Anime { ID = 1, Name = "fake", Episodes = 12, AirStart = DateTime.Now, Genres = new Genre { ID = 595, Name = "random" } };
 
-            _context.Animes.Add(tempAnime);
+            _context.Animes.Add(checkAnime);
             _context.SaveChanges();
 
-            Assert.AreEqual(tempAnime, _context.Animes.ToArray()[3]);
+            Assert.AreEqual(checkAnime, _context.Animes.ToArray()[3]);
         }
 
         [TestMethod]
@@ -265,7 +249,7 @@ namespace AnimeMangaTest
         [TestMethod]
         public void GetDeleteInvalidID()
         {
-            var result = controller.Delete(99); //invalid ID
+            var result = controller.Delete(99); 
             var viewResult = (ViewResult)result.Result;
             Assert.AreEqual("Error", viewResult.ViewName);
         }
@@ -273,8 +257,8 @@ namespace AnimeMangaTest
         [TestMethod]
         public void GetDeleteReturnsDeleteView()
         {
-            var id = 87;
-            var result = controller.Delete(id); // valid ID
+            var id = 12;
+            var result = controller.Delete(id);
             var viewResult = (ViewResult)result.Result;
             Assert.AreEqual("Delete", viewResult.ViewName);
         }
@@ -282,8 +266,8 @@ namespace AnimeMangaTest
         [TestMethod]
         public void GetDeleteValidProduct()
         {
-            var id = 87;
-            var result = controller.Delete(id); // valid ID
+            var id = 12;
+            var result = controller.Delete(id); 
             var viewResult = (ViewResult)result.Result;
             Anime tempAnime = (Anime)viewResult.Model;
             Assert.AreEqual(animes[0], tempAnime);
@@ -293,8 +277,8 @@ namespace AnimeMangaTest
         [TestMethod]
         public void PostDeleteSuccess()
         {
-            var id = 87;
-            var result = controller.DeleteConfirmed(id); // valid ID
+            var id = 12;
+            var result = controller.DeleteConfirmed(id); 
             var product = _context.Animes.Find(id);
             Assert.AreEqual(product, null);
         }
@@ -302,8 +286,8 @@ namespace AnimeMangaTest
         [TestMethod]
         public void PostDeleteReturnsIndex()
         {
-            var id = 87;
-            var result = controller.DeleteConfirmed(id); // valid ID
+            var id = 12;
+            var result = controller.DeleteConfirmed(id);
             var actionResult = (RedirectToActionResult)result.Result;
             Assert.AreEqual("Index", actionResult.ActionName);
         }
@@ -311,10 +295,9 @@ namespace AnimeMangaTest
         [TestMethod]
         public void DetailsNoId()
         {
-            // Act
+            
             var result = controller.Details(id: null);
-            var viewResult = (ViewResult)result.Result;
-            // Assert
+            var viewResult = (ViewResult)result.Result;    
             Assert.AreEqual("Error", viewResult.ViewName);
 
         }
@@ -323,11 +306,11 @@ namespace AnimeMangaTest
         public void DetailsInvalidId()
         {
 
-            // Act
+            
             var result = controller.Details(23);
             var viewResult = (ViewResult)result.Result;
 
-            // Assert
+            
             Assert.AreEqual("Error", viewResult.ViewName);
 
         }
@@ -346,12 +329,11 @@ namespace AnimeMangaTest
         [TestMethod]
         public void DetailObjectReturnsMatches()
         {
-            //Arrange
+            
             int id = animes[0].ID;
-            //Act
             var result = controller.Details(id);
             var viewResult = (ViewResult)result.Result;
-            // Assert       
+                
             Assert.AreEqual(animes[0], viewResult.Model);
         }
 

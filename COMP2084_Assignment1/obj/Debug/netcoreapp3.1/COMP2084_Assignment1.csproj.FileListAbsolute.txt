@@ -426,3 +426,7 @@ C:\Users\mitch\source\repos\AnimeMangaCOMP2084\COMP2084_Assignment1\obj\Debug\ne
 C:\Users\mitch\source\repos\AnimeMangaCOMP2084\COMP2084_Assignment1\obj\Debug\netcoreapp3.1\COMP2084_Assignment1.dll
 C:\Users\mitch\source\repos\AnimeMangaCOMP2084\COMP2084_Assignment1\obj\Debug\netcoreapp3.1\COMP2084_Assignment1.pdb
 C:\Users\mitch\source\repos\AnimeMangaCOMP2084\COMP2084_Assignment1\obj\Debug\netcoreapp3.1\COMP2084_Assignment1.genruntimeconfig.cache
+C:\Users\mitch\source\repos\AnimeMangaCOMP2084\COMP2084_Assignment1\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+C:\Users\mitch\source\repos\AnimeMangaCOMP2084\COMP2084_Assignment1\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\mitch\source\repos\AnimeMangaCOMP2084\COMP2084_Assignment1\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\mitch\source\repos\AnimeMangaCOMP2084\COMP2084_Assignment1\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll

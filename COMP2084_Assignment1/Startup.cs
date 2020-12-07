@@ -42,6 +42,9 @@ namespace COMP2084_Assignment1
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            //Swagger
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,6 +75,13 @@ namespace COMP2084_Assignment1
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+            });
+
+            //Enable Swagger ui
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Anime/Manga List API Documentation V1");
             });
         }
     }

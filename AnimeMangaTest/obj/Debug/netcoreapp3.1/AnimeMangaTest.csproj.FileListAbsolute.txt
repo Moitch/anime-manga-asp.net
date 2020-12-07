@@ -494,3 +494,4 @@ C:\Users\mitch\source\repos\AnimeMangaCOMP2084\AnimeMangaTest\obj\Debug\netcorea
 C:\Users\mitch\source\repos\AnimeMangaCOMP2084\AnimeMangaTest\obj\Debug\netcoreapp3.1\AnimeMangaTest.dll
 C:\Users\mitch\source\repos\AnimeMangaCOMP2084\AnimeMangaTest\obj\Debug\netcoreapp3.1\AnimeMangaTest.pdb
 C:\Users\mitch\source\repos\AnimeMangaCOMP2084\AnimeMangaTest\obj\Debug\netcoreapp3.1\AnimeMangaTest.genruntimeconfig.cache
+C:\Users\mitch\source\repos\AnimeMangaCOMP2084\AnimeMangaTest\bin\Debug\netcoreapp3.1\COMP2084_Assignment1.StaticWebAssets.xml
